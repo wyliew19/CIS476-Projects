@@ -7,9 +7,9 @@
 // Industrial sector (Factories)
 class AbstractWordFactory {
     public:
-        virtual AbstractPanel* createPanel() = 0;
-        virtual AbstractButton* createButton() = 0;
-        virtual AbstractText* createText() = 0;
+        virtual AbstractPanel* createPanel() {}
+        virtual AbstractButton* createButton() {}
+        virtual AbstractText* createText() {}
 };
 
 class ConcWord90Fact : public AbstractWordFactory {
@@ -18,15 +18,15 @@ public:
     ConcWord90Fact() { instanceCount++; }
 
     AbstractPanel* createPanel() {
-
+        return (AbstractPanel*)(new Panel90());
     }
 
     AbstractButton* createButton() {
-
+        return (AbstractButton*)(new Button90());
     }
 
     AbstractText* createText() {
-
+        return (AbstractText*)(new Text90());
     }
 
     static ConcWord90Fact* getInstance() {
@@ -40,15 +40,15 @@ public:
     ConcWord00Fact() { instanceCount++; }
 
     AbstractPanel* createPanel() {
-
+        return (AbstractPanel*)(new Panel00());
     }
 
     AbstractButton* createButton() {
-
+        return (AbstractButton*)(new Button00());
     }
 
     AbstractText* createText() {
-
+        return (AbstractText*)(new Text00());
     }
 
     static ConcWord00Fact* getInstance() {
@@ -62,15 +62,15 @@ public:
     ConcWord10Fact() { instanceCount++; }
 
     AbstractPanel* createPanel() {
-
+        return (AbstractPanel*)(new Panel10());
     }
 
     AbstractButton* createButton() {
-
+        return (AbstractButton*)(new Button10());
     }
 
     AbstractText* createText() {
-
+        return (AbstractText*)(new Text10());
     }
 
     static ConcWord10Fact* getInstance() {
@@ -84,15 +84,15 @@ public:
     ConcWord24Fact() { instanceCount++; }
 
     AbstractPanel* createPanel() {
-
+        return (AbstractPanel*)(new Panel24());
     }
 
     AbstractButton* createButton() {
-
+        return (AbstractButton*)(new Button24());
     }
 
     AbstractText* createText() {
-
+        return (AbstractText*)(new Text24());
     }
 
     static ConcWord24Fact getInstance() {
@@ -104,7 +104,7 @@ public:
 // Panels
 class AbstractPanel {
 public:
-    virtual void printDescription() = 0;
+    virtual void printDescription() {};
 };
 
 class Panel90 {
@@ -139,7 +139,7 @@ public:
 // Buttons
 class AbstractButton {
 public:
-    virtual void printDescription() = 0;
+    virtual void printDescription() {};
 };
 
 class Button90 {
@@ -174,7 +174,7 @@ public:
 // Textboxes
 class AbstractText {
 public:
-    virtual void printDescription() = 0;
+    virtual void printDescription() {};
 };
 
 class Text90 {
@@ -213,11 +213,15 @@ class Client {
     AbstractText* text;
 public:
     Client(AbstractWordFactory* factory) {
-
+        panel = factory->createPanel();
+        button = factory->createButton();
+        text = factory->createText();
     }
 
     void run() {
-
+        panel->printDescription();
+        button->printDescription();
+        text->printDescription();
     }
 
 };
