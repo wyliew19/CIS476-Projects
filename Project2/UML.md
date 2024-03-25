@@ -1,43 +1,36 @@
 ```mermaid
 classDiagram
-    class BidRequest {
-        +double bidPrice
-        +BidRequest(double bidPrice)
-        +double getBidPrice()
+    FastAPI -- SuiteHandler
+    FastAPI -- DeluxeHandler
+    FastAPI -- StandardHandler
+    FastAPI -- Jinja2Templates
+    SuiteHandler o-- DeluxeHandler : sets successor
+    DeluxeHandler o-- StandardHandler : sets successor
+    namespace UI {
+        class FastAPI{
+            +get(path: str, response_class: Type) Function
+            +post(path: str) Function
+        }
+        class Jinja2Templates{
+            -directory: str
+            +TemplateResponse(name: str, context: dict) TemplateResponse
+        }
     }
-    class Handler {
-        +Handler successor
-        +void setSuccessor(Handler successor)
-        +abstract boolean handleRequest(BidRequest request)
+    namespace CoR {
+        class SuiteHandler{
+            -successor: Handler
+            +set_successor(successor: Handler) void
+            +handle_request(bid_price: float) str
+        }
+        class DeluxeHandler{
+            -successor: Handler
+            +set_successor(successor: Handler) void
+            +handle_request(bid_price: float) str
+        }
+        class StandardHandler{
+            -successor: Handler
+            +set_successor(successor: Handler) void
+            +handle_request(bid_price: float) str
+        }
     }
-    class SuiteHandler {
-        -int availableRooms = 10
-        -double minPrice = 280
-        +SuiteHandler()
-        +boolean handleRequest(BidRequest request)
-    }
-    class DeluxeHandler {
-        -int availableRooms = 15
-        -double minPrice = 150
-        +DeluxeHandler()
-        +boolean handleRequest(BidRequest request)
-    }
-    class StandardHandler {
-        -int availableRooms = 45
-        -double minPrice = 80
-        +StandardHandler()
-        +boolean handleRequest(BidRequest request)
-    }
-    class GUI {
-        +void enterBidPrice(double price)
-        +void displayOutcome(String message)
-    }
-    BidRequest "1" --> "1" Handler : makes
-    Handler <|-- SuiteHandler
-    Handler <|-- DeluxeHandler
-    Handler <|-- StandardHandler
-    SuiteHandler "1" --> "1" DeluxeHandler : next
-    DeluxeHandler "1" --> "1" StandardHandler : next
-    GUI --> BidRequest : creates
-    GUI --> Handler : interacts
-    ```
+```
