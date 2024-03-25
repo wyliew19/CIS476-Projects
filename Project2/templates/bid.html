@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hotel Room Bidding System</title>
+    <script>
+        function submitForm(event) {
+            event.preventDefault();
+            var bidPrice = document.getElementById('bid_price').value;
+            if (!bidPrice || isNaN(bidPrice)) {
+                alert('Please enter a valid bid price');
+                return;
+            }
+            fetch('/bid', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    bid_price: parseFloat(bidPrice)
+                })
+            })
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Hotel Room Bidding System</h1>
+    <form onsubmit="submitForm(event)">
+        <label for="bid_price">Enter your bid price:</label><br>
+        <input type="number" id="bid_price" name="bid_price" min="1" step="0.01" required><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
